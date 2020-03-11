@@ -1,0 +1,11 @@
+numpy
+h5py
+scipy
+scikit-learn
+scikit-image
+soundfile
+pysptk
+pyworld
+librosa
+dtw_c
+six
