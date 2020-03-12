@@ -1,5 +1,5 @@
 # This is the hyperparameter configuration file for Parallel WaveGAN.
-# Please make sure this is adjusted for the vcc2018. If you want to
+# Please make sure this is adjusted for the vcc2020. If you want to
 # apply to the other dataset, you might need to carefully change some parameters.
 # This configuration requires 12 GB GPU memory and takes ~3 days on TITAN V.
 

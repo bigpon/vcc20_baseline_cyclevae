@@ -26,6 +26,9 @@ Finally, all processes (stages) will be run from the script.
    
     $ bash run_cyclevae.sh
 
+**NOTE:** 
+- It takes ~2 days to train a CycleVAE model on TITAN V.
+
 
 ----
 ## CycleVAE script and folders
@@ -133,18 +136,31 @@ Finally, decode speech w/ each VC speaker pair.
     $ bash run_pwg.sh --gpu <gpuid> --stage 3 \
     --mode <train_mode> --conf <config_version>
 
+**NOTE:** 
+- It takes ~3 days to train a PWG model on TITAN V.
+- The RTF of PWG generation is ~0.018 on TITAN V.
+- The total training time of CycleVAE w/ PWG is ~5 days with single TITAN V.
+
 
 ---
 ## References
 
-* [CycleVAE](https://arxiv.org/abs/1907.10185) [github](https://github.com/patrickltobing/cyclevae-vc)
+* CycleVAE [[paper]](https://www.isca-speech.org/archive/Interspeech_2019/pdfs/2307.pdf) [[github]](https://github.com/patrickltobing/cyclevae-vc)
 
-* [PWG](https://arxiv.org/abs/1910.11480) [github](https://github.com/kan-bayashi/ParallelWaveGAN)
+* PWG [[paper]](https://arxiv.org/abs/1910.11480) [[github]](https://github.com/kan-bayashi/ParallelWaveGAN)
 
 
 ---
 ## Authors
 
-Patrick Lumban Tobing ([@patrickltobing](https://github.com/patrickltobing)), Yi-Chiao Wu ([@bigpon](https://github.com/bigpon))
+Development:   
+Patrick Lumban Tobing @ Nagoya University ([@patrickltobing](https://github.com/patrickltobing))  
+Yi-Chiao Wu @ Nagoya University ([@bigpon](https://github.com/bigpon))  
 
-E-mail: `patrick.lumbantobing@g.sp.m.is.nagoya-u.ac.jp`, `yichiao.wu@g.sp.m.is.nagoya-u.ac.jp`
+Advisor:  
+Tomoki Toda @ Nagoya University
+
+E-mail:  
+`patrick.lumbantobing@g.sp.m.is.nagoya-u.ac.jp`  
+`yichiao.wu@g.sp.m.is.nagoya-u.ac.jp`  
+`tomoki@icts.nagoya-u.ac.jp`
