@@ -119,6 +119,7 @@ Install ParallelWaveGAN.
 **gpuid**: (default: "0")  
 **train_mode**: (default: "mixed", choices: ["mixed", "natural"])  
 **config_version**: (default: "default")  
+**test_set**: (default: "dv50_vcc2020_24kHz")  
 
 First, train PWG.  
 
@@ -129,12 +130,14 @@ First, train PWG.
 Secondly, decode speech w/ natural or artificial features.
     
     $ bash run_pwg.sh --gpu <gpuid> --stage 2 \
-    --mode <train_mode> --conf <config_version>
+    --mode <train_mode> --conf <config_version> \
+    --evalset <test_set>
 
 Finally, decode speech w/ each VC speaker pair.
     
     $ bash run_pwg.sh --gpu <gpuid> --stage 3 \
-    --mode <train_mode> --conf <config_version>
+    --mode <train_mode> --conf <config_version> \
+    --evalset <test_set>
 
 **NOTE:** 
 - It takes ~3 days to train a PWG model on TITAN V.

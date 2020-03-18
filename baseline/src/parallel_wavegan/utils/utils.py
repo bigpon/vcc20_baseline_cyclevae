@@ -50,7 +50,7 @@ def read_hdf5(hdf5_name, hdf5_path1, hdf5_path2=None):
 
     """
     if not os.path.exists(hdf5_name):
-        logging.error("There is no such a hdf5 file" % hdf5_name)
+        logging.error("%s is not exist!!" % hdf5_name)
         sys.exit(0)
     hdf5_file = h5py.File(hdf5_name, "r")
 
@@ -60,7 +60,7 @@ def read_hdf5(hdf5_name, hdf5_path1, hdf5_path2=None):
         if hdf5_path2 in hdf5_file:
             hdf5_path = hdf5_path2
         else:
-            logging.error("%s and %s are not in hdf5 file" % (hdf5_path1, str(hdf5_path2)))
+            logging.error("%s and %s are not in hdf5 file" % (str(hdf5_path1), str(hdf5_path2)))
             sys.exit(0)
     hdf5_data = hdf5_file[hdf5_path][()]
     hdf5_file.close()

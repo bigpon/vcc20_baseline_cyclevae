@@ -11,7 +11,7 @@
 Usage: runpwg.py [-h] 
                 [-g GPUID]  [-c CONFIG]
                 [-M MODE] [-R RESUME] [-I ITER]
-                [-s SRCSPK] [-t TARSPK]
+                [-s SRCSPK] [-t TARSPK] [-e EVALSET]
                 [-1] [-2] [-3]
               
 Options:
@@ -23,6 +23,7 @@ Options:
     -I ITER          Number of iteration of testing model 
     -s SRCSPK        Source speaker
     -t TARSPK        Target speaker
+    -e EVALSET       Evaluation set
     -1, --step1      Execute step1 (PWG training)
     -2, --step2      Execute step2 (PWG decodeing w/ acoustic features)
     -3, --step3      Execute step3 (PWG decodeing w/ speaker voice converted acoustic features)
@@ -75,6 +76,7 @@ if __name__ == "__main__":
     source_decode   = "%s/bin/decode.py"   % (source_root)
     tr_version      = "tr50_vcc2020_24kHz" # training
     dv_version      = "dv50_vcc2020_24kHz" # development
+    ts_version      = "dv50_vcc2020_24kHz" # testing
     model_version   = "%s_%s" % (network, tr_version) # model name    
     config_version  = "default" # config name
     model_iters     = "400000" # iteration of testing model
@@ -84,10 +86,12 @@ if __name__ == "__main__":
     if args['-I'] is not None:
         model_iters = args['-I']
     if args['-M'] is not None:
-        train_mode = args['-M']    
+        train_mode = args['-M']
+    if args['-e'] is not None:
+        ts_version = args['-e']    
     stats           = "data/%s/stats_jnt.h5" % (tr_version)
     config          = "conf_pwg/vcc2020.%s.yaml" % (config_version)
-    outdir          = "exp/%s_%s_%s" % (model_version, config_version, train_mode) 
+    outdir          = "exp/%s_%s_%s" % (model_version, config_version, train_mode)
     trainaux_path   = "data/%s" % (tr_version)
     trainwav_path   = "data/%s" % (tr_version)
     validaux_path   = "data/%s" % (dv_version)
@@ -114,6 +118,8 @@ if __name__ == "__main__":
         else:
             print("Training mode %s is not supported!!" % train_mode)
             sys.exit(0)
+        _path_check([trainaux_feats, trainwaveforms, 
+                     validaux_feats, validwaveforms])
         # resume setting
         if args['-R'] is not None:
             resume = outdir + "/checkpoint-%ssteps.pkl" % (args['-R'])
@@ -139,15 +145,12 @@ if __name__ == "__main__":
     
     # EVALUATION (ANALYSIS-SYNTHESIS)
     if execute_steps[2]:
-        # check trained model
-        checkpoint = "%s/checkpoint-%ssteps.pkl" % (outdir, model_iters)
-        _path_check([checkpoint])
         # path setting
-        ts_version  = "dv50_vcc2020_24kHz"
-        indir = "hdf5/%s/" % (ts_version) # feature input paths
-        outdir_eval = "%s/wav/%s/%s/" % (outdir, model_iters, ts_version) # wav output path
-        # load testing list
+        checkpoint    = "%s/checkpoint-%ssteps.pkl" % (outdir, model_iters) # trained model
+        indir         = "hdf5/%s/" % (ts_version) # feature input paths
+        outdir_eval   = "%s/wav/%s/%s/" % (outdir, model_iters, ts_version) # wav output path 
         testaux_feats = "data/%s/feats_ftcyc.scp" % (ts_version)
+        _path_check([checkpoint, indir, testaux_feats])
         # speech decoding
         cmd = "python "          + source_decode + \
             " --world_test "     + testaux_feats + \
@@ -172,19 +175,16 @@ if __name__ == "__main__":
         else:
             srcspk = args['-s']
         if args['-t'] is None:
-            print("Please assign source speaker by -t TARSPK!")
+            print("Please assign target speaker by -t TARSPK!")
             sys.exit(0)
         else:
             tarspk = args['-t']
-        # check trained model
-        checkpoint = "%s/checkpoint-%ssteps.pkl" % (outdir, model_iters)
-        _path_check([checkpoint])
         # path setting
-        ts_version  = "dv50_vcc2020_24kHz"
-        indir = "hdf5/%s/" % (ts_version) # feature input paths
-        outdir_eval = "%s/wav/%s/%s/" % (outdir, model_iters, ts_version) # wav output path
-        # load testing list
-        testaux_feats = "data/%s/feats_cv_%s-%s.scp" % (ts_version, srcspk, tarspk)
+        checkpoint    = "%s/checkpoint-%ssteps.pkl" % (outdir, model_iters) # trained model
+        indir         = "hdf5/%s/" % (ts_version) # feature input paths
+        outdir_eval   = "%s/wav/%s/%s/" % (outdir, model_iters, ts_version) # wav output path 
+        testaux_feats = "data/%s/feats_cv_%s-%s.scp" % (ts_version, srcspk, tarspk) # testing list
+        _path_check([checkpoint, indir, testaux_feats])
         # speech decoding
         cmd = "python "          + source_decode + \
             " --world_test "     + testaux_feats + \
