@@ -3,9 +3,11 @@
 Official homepage: [http://www.vc-challenge.org/](http://www.vc-challenge.org/)
 
 ## News
-* 2020/3/18 release the generated samples of [reference_v.10](https://drive.google.com/open?id=1tboF-XCDlrxrB6CxUt9rojXRwc5K-LVv).
+- **2020/4/17** upload the missed conversion pair of [SEF2-TEM1](https://drive.google.com/drive/folders/1EjBTuqS9R1GMoCaEpqaJRGs4QoM-gSDK) of reference_v.10.
 
-* 2020/3/11 release the first version repo and the generated samples of [development set](https://drive.google.com/open?id=10zCNAndVid1n184qXgWqfm6bOLcW2NAi) (dv50_vcc2020_24kHz).
+- **2020/3/18** release the generated samples of [reference_v.10](https://drive.google.com/open?id=1tboF-XCDlrxrB6CxUt9rojXRwc5K-LVv).
+
+- **2020/3/11** release the first version repo and the generated samples of [development set](https://drive.google.com/open?id=10zCNAndVid1n184qXgWqfm6bOLcW2NAi) (dv50_vcc2020_24kHz).
 
 ## Introduction
 
