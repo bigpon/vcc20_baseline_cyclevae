@@ -56,12 +56,15 @@ def read_hdf5(hdf5_name, hdf5_path1, hdf5_path2=None):
 
     if hdf5_path1 in hdf5_file:
         hdf5_path = hdf5_path1
-    else:
+    elif hdf5_path2:
         if hdf5_path2 in hdf5_file:
             hdf5_path = hdf5_path2
         else:
-            logging.error("%s and %s are not in hdf5 file" % (str(hdf5_path1), str(hdf5_path2)))
+            logging.error("%s and %s are not in hdf5 file" % (hdf5_path1, str(hdf5_path2)))
             sys.exit(0)
+    else:
+        logging.error("%s is not in hdf5 file" % (hdf5_path1))
+        sys.exit(0)
     hdf5_data = hdf5_file[hdf5_path][()]
     hdf5_file.close()
 
