@@ -127,6 +127,7 @@ class AudioWorldDataset(Dataset):
         scaler        = StandardScaler()
         scaler.mean_  = read_hdf5(stats, mean_path)
         scaler.scale_ = read_hdf5(stats, scale_path)
+        # for version 0.23.0, this information is needed
         scaler.n_features_in_ = scaler.mean_.shape[0]
         self.feat_transform = lambda x: scaler.transform(x)
 
@@ -316,6 +317,8 @@ class WorldDataset(Dataset):
         scaler        = StandardScaler()
         scaler.mean_  = read_hdf5(stats, mean_path)
         scaler.scale_ = read_hdf5(stats, scale_path)
+        # for version 0.23.0, this information is needed
+        scaler.n_features_in_ = scaler.mean_.shape[0]
         self.feat_transform = lambda x: scaler.transform(x)
 
     def __getitem__(self, idx):
