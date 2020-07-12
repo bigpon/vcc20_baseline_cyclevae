@@ -16,7 +16,7 @@ import numpy as np
 import torch
 import torch.multiprocessing as mp
 
-from feature_extract import mod_pow, convert_f0, convert_continuos_f0, low_pass_filter
+from feature_extract import convert_f0, convert_continuos_f0, low_pass_filter
 from utils import find_files, read_hdf5, read_txt, write_hdf5, check_hdf5
 
 from dtw_c import dtw_c as dtw
@@ -276,9 +276,6 @@ def main():
                 logging.info("mcdpow_rec: %.6f dB +- %.6f" % (mcdpow_mean, mcdpow_std))
                 logging.info("mcd_rec: %.6f dB +- %.6f" % (mcd_mean, mcd_std))
 
-                logging.info("mod_pow")
-                cvmcep = mod_pow(cvmcep, mcep, alpha=args.mcep_alpha, irlen=IRLEN)
-                logging.info(cvmcep.shape)
                 feat_cvmcep = np.c_[feat[:,:config.stdim], cvmcep]
                 logging.info(feat_cvmcep.shape)
                 write_path = '/feat_recmcep_cycvae-'+model_epoch
