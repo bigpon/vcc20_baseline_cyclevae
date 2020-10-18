@@ -22,11 +22,11 @@ from utils import read_hdf5
 from utils import read_txt
 from utils import check_hdf5
 from utils import write_hdf5
-from feature_extract import low_cut_filter, convert_f0, mod_pow, read_wav, analyze_range
+from feature_extract import low_cut_filter, convert_f0, read_wav, analyze_range
 from feature_extract import convert_continuos_f0, low_pass_filter
 from feature_extract import spc2npow, extfrm
 
-from scipy.io import wavfile
+import soundfile as sf
 import h5py
 
 from dtw_c import dtw_c as dtw
@@ -301,9 +301,6 @@ def main():
                 feat_cv = np.c_[uv_cv,logcontf0_cv,codeap]
                 logging.info(feat_cv.shape)
 
-                logging.info("mod_pow")
-                cvmcep = mod_pow(cvmcep, mcep, alpha=args.mcep_alpha, irlen=IRLEN)
-                logging.info(cvmcep.shape)
                 feat_cvmcep = np.c_[feat_cv, cvmcep]
                 logging.info(feat_cvmcep.shape)
                 write_path = '/feat_cvmcep_cycvae-'+model_epoch
@@ -330,15 +327,15 @@ def main():
                 logging.info("synth voco")
                 cvsp = ps.mc2sp(cvmcep, args.mcep_alpha, fft_size)
                 logging.info(cvsp.shape)
-                wav = np.clip(pw.synthesize(cvf0, cvsp, ap, fs, frame_period=args.shiftms), -32768, 32768)
+                wav = np.clip(pw.synthesize(cvf0, cvsp, ap, fs, frame_period=args.shiftms), -1, 1)
                 wavpath = os.path.join(args.outdir, os.path.basename(wav_file).replace(".wav", "_cv.wav"))
-                wavfile.write(wavpath, fs, np.int16(wav))
+                sf.write(wavpath, wav, fs, 'PCM_16')
                 logging.info(wavpath)
 
                 logging.info("synth anasyn")
-                wav = np.clip(pw.synthesize(f0, sp, ap, fs, frame_period=args.shiftms), -32768, 32768)
+                wav = np.clip(pw.synthesize(f0, sp, ap, fs, frame_period=args.shiftms), -1, 1)
                 wavpath = os.path.join(args.outdir,os.path.basename(wav_file).replace(".wav","_anasyn.wav"))
-                wavfile.write(wavpath, fs, np.int16(wav))
+                sf.write(wavpath, wav, fs, 'PCM_16')
                 logging.info(wavpath)
 
 

@@ -18,7 +18,7 @@ import logging
 import numpy as np
 from numpy.matlib import repmat
 from scipy.interpolate import interp1d
-from scipy.io import wavfile
+import soundfile as sf
 from scipy.signal import firwin
 from scipy.signal import lfilter
 
@@ -42,7 +42,7 @@ MCEP_ALPHA = 0.466 #24k
 FFTL = 2048
 IRLEN = 1024
 LOWPASS_CUTOFF = 20
-HIGHPASS_CUTOFF = 70
+HIGHPASS_CUTOFF = 65
 OVERWRITE = True
 
 
@@ -62,7 +62,7 @@ def low_cut_filter(x, fs, cutoff=HIGHPASS_CUTOFF):
     norm_cutoff = cutoff / nyquist
 
     # low cut filter
-    fil = firwin(255, norm_cutoff, pass_zero=False)
+    fil = firwin(1023, norm_cutoff, pass_zero=False)
     lcf_x = lfilter(fil, 1, x)
 
     return lcf_x
@@ -89,8 +89,7 @@ def analyze_range(wav, fs=FS, minf0=MINF0, maxf0=MAXF0, fperiod=SHIFTMS, fftl=FF
 
 
 def read_wav(wav_file, cutoff=HIGHPASS_CUTOFF):
-    fs, x = wavfile.read(wav_file)
-    x = np.array(x, dtype=np.float64)
+    x, fs = sf.read(wav_file)
     if cutoff != 0:
         x = low_cut_filter(x, fs, cutoff)
 
@@ -349,13 +348,13 @@ def main():
                 if max_frame < feat_org_lf0.shape[0]:
                     max_frame = feat_org_lf0.shape[0]
                 if args.highpass_cutoff != 0 and args.wavfiltdir is not None:
-                    wavfile.write(args.wavfiltdir + "/" + os.path.basename(wav_name), fs, np.int16(x))
+                    sf.write(args.wavfiltdir + "/" + os.path.basename(wav_name), x, fs, 'PCM_16')
                 wavpath = args.wavdir + "/" + os.path.basename(wav_name)
                 logging.info(wavpath)
                 sp_rec = ps.mc2sp(mcep_range, args.mcep_alpha, args.fftl)
                 wav = np.clip(pw.synthesize(f0_range, sp_rec, ap_range, fs, frame_period=args.shiftms), \
-                               -32768, 32767)
-                wavfile.write(wavpath, fs, np.int16(wav))
+                               -1, 1)
+                sf.write(wavpath, wav, fs, 'PCM_16')
             else:
                 time_axis, f0, spc, ap = analyze(x, fs=fs, fperiod=args.shiftms, fftl=args.fftl)
                 write_hdf5(hdf5name, "/f0", f0)

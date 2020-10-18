@@ -42,7 +42,7 @@ stage=012345
 # }}}
 shiftms=5
 fftl=2048
-highpass_cutoff=70
+highpass_cutoff=65
 fs=24000
 mcep_dim=49
 mag=0.5
