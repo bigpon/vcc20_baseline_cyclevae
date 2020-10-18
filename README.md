@@ -3,6 +3,8 @@
 Official homepage: [http://www.vc-challenge.org/](http://www.vc-challenge.org/)
 
 ## News
+- **2020/10/18** update [paper](https://www.isca-speech.org/archive/VCC_BC_2020/pdfs/VCC2020_paper_26.pdf) information.
+
 - **2020/4/17** upload the missed conversion pair of [SEF2-TEM1](https://drive.google.com/drive/folders/1EjBTuqS9R1GMoCaEpqaJRGs4QoM-gSDK) of reference_v.10.
 
 - **2020/3/18** release the generated samples of [reference_v.10](https://drive.google.com/open?id=1tboF-XCDlrxrB6CxUt9rojXRwc5K-LVv).
@@ -49,6 +51,22 @@ Please check `baseline/README.md`.
 
 * PWG [[paper]](https://arxiv.org/abs/1910.11480) [[github]](https://github.com/kan-bayashi/ParallelWaveGAN)
 
+
+---
+## Citation
+
+If you find the code is helpful, please cite the following article.
+
+```
+@InProceedings{vcc20vaebaseline,
+author={Tobing, Patrick Lumban and Wu, Yi-Chiao and Toda, Tomoki},
+title={Baseline System of Voice Conversion Challenge 2020 with Cyclic Variational
+Autoencoder and Parallel WaveGAN},
+booktitle="Proc. Joint Workshop for the Blizzard Challenge and Voice Conversion Challenge 2020",
+year="2020",
+month="Oct.",
+}
+```
 
 ---
 ## Authors
